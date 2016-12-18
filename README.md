@@ -5,15 +5,14 @@ Christmas
 
 <h1>Settings</h1>
 ```PAWN
-#define MAX_PLAYERS             60      //Define how much slots your server uses
-#define using_streamer          false   //When true you tell the script you are using Incognito's streamer
+#define MAX_PLAYERS				60		//Define how much slots your server uses
 #define SF						false   //When true it will add some default objects in San Fierro (using 568 objects ! (You can edit it ofc))
-#define MAX_BATTERIES       	50      //Maximum firework batteries
-#define MAX_XMASTREES			20 	    //recommended - If you have more you might need a object streamer
-#define MAX_SNOW_OBJECTS   		5 	    //recommended - If you have more you might need a object streamer
+#define MAX_BATTERIES			5      	//Maximum firework batteries
+#define MAX_XMASTREES			30 		//recommended - If you have more you might need an object streamer
+#define MAX_SNOW_OBJECTS		2 		//recommended - If you have more you might need an object streamer
 #define SNOW_UPDATE_INTERVAL	750     //time in milliseconds, the interval between the snow
-#define NEXT_YEAR          		"2015"  //Which year is it next year ?
-#define FILE_SAVE               "[MV]_Christmas.txt" //The name of the file where to save positions too with /savepos
+#define NEXT_YEAR				"2017"  //Which year is it next year ?
+#define FILE_SAVE				"[MV]_Christmas.txt" //The name of the file where to save positions too with /savepos
 ```
 
 
