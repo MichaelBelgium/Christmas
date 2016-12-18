@@ -24,61 +24,56 @@ Free to use on the following conditions:
 #include <zcmd>
 #include <xFireworks>
 
-#define pLoop()             	for(new i = 0, j = GetMaxPlayers(); i < j; i++) if(IsPlayerConnected(i))
-#define Loop(%0,%1) 			for(new %0 = 0; %0 < %1; %0++)
-#define LoopEx(%0,%1,%2) 		for(new %0 = %1; %0 < %2; %0++)
+#define pLoop()					for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) if(IsPlayerConnected(i))
+#define Loop(%0,%1)				for(new %0 = 0; %0 < %1; %0++)
+#define LoopEx(%0,%1,%2)		for(new %0 = %1; %0 < %2; %0++)
 #undef  MAX_PLAYERS
 
-#define MAX_PLAYERS             60      //Define how much slots your server uses
-#define using_streamer          false   //When true you tell the script you are using Incognito's streamer
-#define SF 						false   //When true it will add some default objects in San Fierro (using 568 objects ! (You can edit it ofc))
-#define MAX_BATTERIES           50      //Maximum firework batteries
-#define MAX_XMASTREES 			20 		//recommended - If you have more you might need a object streamer
-#define MAX_SNOW_OBJECTS    	3 		//recommended - If you have more you might need a object streamer
-#define SNOW_UPDATE_INTERVAL	500     //time in milliseconds, the interval between the snow
-#define NEXT_YEAR               "2015"  //Which year is it next year ?
-#define FILE_SAVE               "[MV]_Christmas.txt" //The name of the file where to save positions too with /savepos
+#define MAX_PLAYERS				60      //Define how much slots your server uses
+#define SF						false   //When true it will add some default objects in San Fierro (using 568 objects ! (You can edit it ofc))
+#define MAX_BATTERIES			5      //Maximum firework batteries
+#define MAX_XMASTREES			30 		//recommended - If you have more you might need an object streamer
+#define MAX_SNOW_OBJECTS		2 		//recommended - If you have more you might need an object streamer
+#define SNOW_UPDATE_INTERVAL	750     //time in milliseconds, the interval between the snow
+#define NEXT_YEAR				"2017"  //Which year is it next year ?
+#define FILE_SAVE				"[MV]_Christmas.txt" //The name of the file where to save positions too with /savepos
 
-#if using_streamer
-	#include <streamer>
-	#define CreateObject CreateDynamicObject
-#endif
 //---------------------------------- COLORS ------------------------------------
-#define COLOR_INVISIBLE 			0xFFFFFF00
-#define COLOR_WHITE 				0xFFFFFFFF
-#define COLOR_BLACK 				0x000000FF
-#define COLOR_BLUE 					0x0000DDFF
-#define COLOR_RED 					0xAA3333AA
-#define COLOR_GREEN 				0x00FF00FF
-#define COLOR_PURPLE 				0xC2A2DAAA
-#define COLOR_YELLOW 				0xFFFF00AA
-#define COLOR_YELLOWORANGE 			0xE8D600FF
-#define COLOR_GREY 					0xAFAFAFAA
-#define COLOR_ORANGE 				0xFF5F11FF
-#define COLOR_BROWN 				0x804000FF
-#define COLOR_CYAN 					0x00FFFFFF
-#define COLOR_LIGHTBLUE 			0x33CCFFAA
-#define COLOR_PINK 					0xFF80C0FF
+#define COLOR_INVISIBLE				0xFFFFFF00
+#define COLOR_WHITE					0xFFFFFFFF
+#define COLOR_BLACK					0x000000FF
+#define COLOR_BLUE					0x0000DDFF
+#define COLOR_RED					0xAA3333AA
+#define COLOR_GREEN					0x00FF00FF
+#define COLOR_PURPLE				0xC2A2DAAA
+#define COLOR_YELLOW				0xFFFF00AA
+#define COLOR_YELLOWORANGE			0xE8D600FF
+#define COLOR_GREY					0xAFAFAFAA
+#define COLOR_ORANGE				0xFF5F11FF
+#define COLOR_BROWN					0x804000FF
+#define COLOR_CYAN					0x00FFFFFF
+#define COLOR_LIGHTBLUE				0x33CCFFAA
+#define COLOR_PINK					0xFF80C0FF
 
-#define COL_ORANGE         			"{FFAF00}"
-#define COL_GREEN          			"{6EF83C}"
-#define COL_RED            			"{FF4040}"
-#define COL_BLUE           			"{0285FF}"
-#define COL_YELLOW         			"{FFEA02}"
-#define COL_EASY           			"{FFF1AF}"
+#define COL_ORANGE					"{FFAF00}"
+#define COL_GREEN					"{6EF83C}"
+#define COL_RED						"{FF4040}"
+#define COL_BLUE					"{0285FF}"
+#define COL_YELLOW					"{FFEA02}"
+#define COL_EASY					"{FFF1AF}"
 
-#define DIALOG_CHRISTMASFW      	1110
-#define DIALOG_SAVE                 1111
-#define DIALOG_CHRISTMAS        	1112
-#define DIALOG_CHRISTMASMUSIC 		1113
-#define DIALOG_CHRISTMASMUSICALL    1114
+#define DIALOG_CHRISTMASFW			1110
+#define DIALOG_SAVE					1111
+#define DIALOG_CHRISTMAS			1112
+#define DIALOG_CHRISTMASMUSIC		1113
+#define DIALOG_CHRISTMASMUSICALL	1114
 
-#define TREE_TYPE_BIG               0
-#define TREE_TYPE_SMALL             1
-#define TREE_TYPE_SMALL2            2
+#define TREE_TYPE_BIG				0
+#define TREE_TYPE_SMALL				1
+#define TREE_TYPE_SMALL2			2
 
-#define HAT_TYPE_1                  0
-#define HAT_TYPE_2                  1
+#define HAT_TYPE_1					0
+#define HAT_TYPE_2					1
 
 #define KEY_AIM (128)
 
@@ -86,15 +81,15 @@ new Snow_F[MAX_PLAYERS], Obj[MAX_PLAYERS], Shoot[MAX_PLAYERS], Killer[MAX_PLAYER
 new explosions[] = {0,2,4,5,6,7,8,9,10,13};
 
 enum e_Battery {
-    inuse,
-    timer,
-    count,
-    Float:height,
-    hvar,
-    Float:windspeed,
-    Float:interval,
-    Float:pos[3],
-    machine
+	inuse,
+	timer,
+	count,
+	Float:height,
+	hvar,
+	Float:windspeed,
+	Float:interval,
+	Float:pos[3],
+	machine
 };
 
 new batteries[MAX_BATTERIES][e_Battery];
@@ -103,7 +98,7 @@ forward  Animate();
 
 new
 	Text:SM_Textdraw[20],
-    Float:TheX = 508.000000,
+	Float:TheX = 508.000000,
 	Float:BoxY = 0.499999,
 	gDirection,
 	gCount,
@@ -111,20 +106,10 @@ new
 ;
 
 new bool:snowOn[MAX_PLAYERS char],
-        snowObject[MAX_PLAYERS][MAX_SNOW_OBJECTS],
-        updateTimer[MAX_PLAYERS char]
+	snowObject[MAX_PLAYERS][MAX_SNOW_OBJECTS],
+	updateTimer[MAX_PLAYERS char]
 ;
 
-enum XmasTrees
-{
-	XmasTreeX,
-    Float:XmasX,
-    Float:XmasY,
-    Float:XmasZ,
-    XmasObject[10],
-};
-
-new Treepos[MAX_XMASTREES][XmasTrees];
 new s_Timer[2];
 
 public OnFilterScriptInit()
@@ -134,31 +119,67 @@ public OnFilterScriptInit()
 	LoadMetasTextdraws();
 	LoadTextdraws();
 	
- 	s_Timer[1] = SetTimer("Animate",300,true);
- 	Loop(i,sizeof(batteries)) batteries[i][inuse] = false;
+	s_Timer[1] = SetTimer("Animate",300,true);
+	Loop(i,sizeof(batteries)) batteries[i][inuse] = false;
 
 	//snowball minigame
-	CreateObject(8172,-716.59997559,3800.50000000,8.50000000,0.00000000,0.00000000,90.00000000); //object(vgssairportland07) (1)
-	CreateObject(3074,-782.29998779,3785.30004883,8.50000000,0.00000000,270.00000000,269.99948120); //object(d9_runway) (6)
-	CreateObject(3074,-782.29998779,3798.89990234,8.50000000,0.00000000,270.00000000,269.99450684); //object(d9_runway) (7)
-	CreateObject(3074,-782.29998779,3807.60009766,8.50000000,0.00000000,270.00000000,269.99450684); //object(d9_runway) (8)
-	CreateObject(3074,-752.09997559,3807.60009766,8.50000000,0.00000000,270.00000000,269.99450684); //object(d9_runway) (9)
-	CreateObject(3074,-722.00000000,3807.50000000,8.50000000,0.00000000,270.00000000,269.99450684); //object(d9_runway) (10)
-	CreateObject(3074,-691.79998779,3807.50000000,8.50000000,0.00000000,270.00000000,269.99450684); //object(d9_runway) (11)
-	CreateObject(3074,-661.59997559,3807.50000000,8.50000000,0.00000000,270.00000000,269.99450684); //object(d9_runway) (12)
-	CreateObject(3074,-753.79998779,3795.19995117,8.60000038,0.00000000,270.00000000,269.99450684); //object(d9_runway) (14)
-	CreateObject(3074,-723.59997559,3795.10009766,8.60000038,0.00000000,270.00000000,269.99450684); //object(d9_runway) (15)
-	CreateObject(3074,-693.40002441,3794.89990234,8.60000038,0.00000000,270.00000000,269.99450684); //object(d9_runway) (16)
-	CreateObject(3074,-664.09997559,3794.69995117,8.60000038,0.00000000,270.00000000,269.99450684); //object(d9_runway) (17)
-	CreateObject(3074,-664.29998779,3781.69995117,8.69999981,0.00000000,270.00000000,269.99450684); //object(d9_runway) (18)
-	CreateObject(3074,-694.50000000,3781.80004883,8.69999981,0.00000000,270.00000000,269.99450684); //object(d9_runway) (19)
-	CreateObject(3074,-724.40002441,3781.89990234,8.69999981,0.00000000,270.00000000,269.99450684); //object(d9_runway) (20)
-	CreateObject(3074,-754.40002441,3782.00000000,8.69999981,0.00000000,270.00000000,269.99450684); //object(d9_runway) (21)
-	CreateObject(8172,-796.79998779,3800.50000000,-48.00000000,90.00000000,0.00000000,90.00000000); //object(vgssairportland07) (2)
-	CreateObject(8172,-650.20001221,3800.50000000,-48.00000000,90.00000000,180.00000000,90.00000000); //object(vgssairportland07) (3)
-	CreateObject(8172,-729.09997559,3780.69995117,12.80000019,0.00000000,270.00000000,270.00000000); //object(vgssairportland07) (4)
-	CreateObject(8172,-726.20001221,3820.19995117,12.80000019,0.00000000,270.00000000,90.00000000); //object(vgssairportland07) (5)
+	CreateObject(8172,-716.59997559,3800.50000000,8.50000000,0.00000000,0.00000000,90.00000000);
+	CreateObject(3074,-782.29998779,3785.30004883,8.50000000,0.00000000,270.00000000,269.99948120);
+	CreateObject(3074,-782.29998779,3798.89990234,8.50000000,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-782.29998779,3807.60009766,8.50000000,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-752.09997559,3807.60009766,8.50000000,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-722.00000000,3807.50000000,8.50000000,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-691.79998779,3807.50000000,8.50000000,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-661.59997559,3807.50000000,8.50000000,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-753.79998779,3795.19995117,8.60000038,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-723.59997559,3795.10009766,8.60000038,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-693.40002441,3794.89990234,8.60000038,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-664.09997559,3794.69995117,8.60000038,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-664.29998779,3781.69995117,8.69999981,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-694.50000000,3781.80004883,8.69999981,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-724.40002441,3781.89990234,8.69999981,0.00000000,270.00000000,269.99450684);
+	CreateObject(3074,-754.40002441,3782.00000000,8.69999981,0.00000000,270.00000000,269.99450684);
+	CreateObject(8172,-796.79998779,3800.50000000,-48.00000000,90.00000000,0.00000000,90.00000000);
+	CreateObject(8172,-650.20001221,3800.50000000,-48.00000000,90.00000000,180.00000000,90.00000000);
+	CreateObject(8172,-729.09997559,3780.69995117,12.80000019,0.00000000,270.00000000,270.00000000);
+	CreateObject(8172,-726.20001221,3820.19995117,12.80000019,0.00000000,270.00000000,90.00000000);
 
+	CreateChristmasTree(TREE_TYPE_SMALL,-2632.50,599.32,14.45);
+	CreateChristmasTree(TREE_TYPE_SMALL2,-2634.42,616.41,14.45);
+	CreateChristmasTree(TREE_TYPE_SMALL,-2659.98,617.10,14.45);
+	CreateChristmasTree(TREE_TYPE_SMALL2,-2661.63,595.80,14.45);
+	CreateChristmasLights(-2588.32,579.69,15.62);
+	CreateChristmasLights(-2545.70,579.99,15.62);
+	CreateChristmasLights(-2710.31,371.91,4.72);
+	CreateChristmasLights(-2710.93,379.82,4.65);
+	CreateChristmasLights(-2701.88,380.10,4.64);
+	CreateChristmasLights(-2701.81,371.91,4.59);
+	CreateChristmasTree(TREE_TYPE_SMALL,-2724.65,376.62,4.37);
+	CreateChristmasTree(TREE_TYPE_SMALL2,-2629.03,1351.30,7.10);
+	CreateChristmasTree(TREE_TYPE_SMALL,-2630.28,1365.00,7.10);
+	CreateChristmasLights(-2600.75,1367.10,7.15);
+	CreateChristmasLights(-2600.78,1351.39,7.13);
+	CreateChristmasLights(-2425.68,1387.59,7.18);
+	CreateChristmasLights(-2310.74,1367.92,6.91);
+	CreateChristmasLights(-2225.17,1322.23,6.91);
+	CreateChristmasTree(TREE_TYPE_BIG,-2078.36,1410.28,7.10);
+	CreateChristmasTree(TREE_TYPE_SMALL2,-1586.40,1213.89,7.19);
+	CreateChristmasTree(TREE_TYPE_SMALL,-1497.92,676.47,7.18);
+	CreateChristmasTree(TREE_TYPE_SMALL2,-1577.47,682.30,7.18);
+	CreateChristmasTree(TREE_TYPE_SMALL,-1636.07,663.34,7.18);
+	CreateChristmasLights(-1639.89,677.15,7.19);
+	CreateChristmasLights(-1623.32,687.50,7.19);
+	CreateChristmasTree(TREE_TYPE_SMALL2,-1530.02,513.15,7.17);
+	CreateChristmasTree(TREE_TYPE_SMALL,-1536.74,544.63,7.17);
+	CreateChristmasLights(-1569.52,543.82,7.17);
+	CreateChristmasLights(-1575.31,500.13,7.17);
+	CreateChristmasLights(-1600.78,466.75,7.17);
+	CreateChristmasLights(-1597.91,441.84,7.17);
+	CreateChristmasLights(-1657.42,382.79,7.18);
+	CreateChristmasTree(TREE_TYPE_SMALL2,1302.0266,442.8565,7.1875);
+	CreateChristmasTree(TREE_TYPE_SMALL,-1259.5078,443.6670,7.1875);
+	CreateChristmasLights(-1425.6161,459.0848,7.1809);
+	CreateChristmasLights(-1465.4143,460.3243,7.1809);
 	//------------SF christmas trees---------
 	#if SF == true
 	CreateChristmasTree(TREE_TYPE_SMALL,-1549.0511,585.0486,7.1797);
@@ -172,7 +193,7 @@ public OnFilterScriptInit()
 	CreateChristmasTree(TREE_TYPE_SMALL,-2608.5371,1348.2877,7.1953);
 	
 	//SF big christmas tree with objects around
-	/*CreateObject(664,-2707.30761719,376.57815552,3.96888542,0.00000000,0.00000000,44.00000000);
+	CreateObject(664,-2707.30761719,376.57815552,3.96888542,0.00000000,0.00000000,44.00000000);
 	CreateObject(664,-2706.46826172,375.02407837,3.96923542,0.00000000,0.00000000,349.99475098);
 	CreateObject(664,-2707.12426758,379.04116821,3.96928978,0.00000000,0.00000000,97.99145508);
 	CreateObject(2486,-2708.43017578,373.17453003,4.97945309,0.00000000,0.00000000,354.00000000);
@@ -345,7 +366,7 @@ public OnFilterScriptInit()
 	CreateObject(3534, -1996.2249755859, 139.30950927734, 40.745124816895, 356.91833496094, 167.98095703125, 24.164428710938);
 	CreateObject(7666, -1998.1800537109, 148.45513916016, 74.819854736328, 0, 0, 0);
 	CreateObject(7666, -1998.1796875, 148.455078125, 74.819854736328, 0, 0, 280);
-	CreateObject(3472, -1997.4697265625, 148.650390625, 60.357498168945, 0, 0, 0);*/
+	CreateObject(3472, -1997.4697265625, 148.650390625, 60.357498168945, 0, 0, 0);
 	
 	CreateChristmasLights(-1293.96105957,471.57125854,6.18750000);
 	CreateChristmasLights(-1260.64416504,444.49423218,6.18750000); 
@@ -419,25 +440,8 @@ public OnFilterScriptInit()
 	return true;
 }
 
-stock CountObjects()
-{
-	new o_count;
-	
-	#if using_streamer
-	o_count = CountDynamicObjects();
-	#else
-	Loop(i,MAX_OBJECTS)	if(IsValidObject(i)) o_count++;
-	#endif
-	
-	return o_count;
-}
-
 public OnRconCommand(cmd[])
 {
-	if(!strcmp("count",cmd,false))
-	{
-		printf("%i",CountObjects());
-	}
 	return 1;
 }
 
@@ -445,70 +449,71 @@ public OnFilterScriptExit()
 {
 	TextDrawDestroy(NYCounter[0]);
 	TextDrawDestroy(NYCounter[1]);
-    TextDrawDestroy(NYCounter[2]);
-    KillTimer(s_Timer[0]);
-    KillTimer(s_Timer[1]);
+	TextDrawDestroy(NYCounter[2]);
+	KillTimer(s_Timer[0]);
+	KillTimer(s_Timer[1]);
 	DestroyTextdraws();
 
- 	pLoop()
+	pLoop()
 	{
-    	if(snowOn{i})
-        {
+		if(snowOn{i})
+		{
 			Loop(x,MAX_SNOW_OBJECTS) DestroyObject(snowObject[i][x]);
-            KillTimer(updateTimer{i});
-        }
- 	}
- 	Loop(i,sizeof(batteries)) DestroyObject(batteries[i][machine]);
+			KillTimer(updateTimer{i});
+		}
+	}
+	Loop(i,sizeof(batteries)) DestroyObject(batteries[i][machine]);
 	return 1;
 }
 
 public OnPlayerDisconnect(playerid,reason)
 {
 	if(snowOn{playerid})
-    {
-    	Loop(i,MAX_SNOW_OBJECTS) DestroyObject(snowObject[playerid][i]);
-        snowOn{playerid} = false;
-        KillTimer(updateTimer{playerid});
-    }
+	{
+		Loop(i,MAX_SNOW_OBJECTS) DestroyObject(snowObject[playerid][i]);
+		snowOn{playerid} = false;
+		KillTimer(updateTimer{playerid});
+	}
 	return 1;
 }
 
-public OnPlayerConnect(  playerid  )
+public OnPlayerConnect(playerid)
 {
 	SendClientMessage(playerid,COLOR_YELLOW,"This server uses [MV]_Christmas, cmds: /christmas");
 
 	new year, month, day, hour, minute, second;
-    getdate(year, month, day);
-    gettime(hour, minute, second);
-    if(day == 1 && month == 1 && (second > 0 || hour > 0)) TextDrawShowForPlayer(playerid, NYCounter[2]);
+	getdate(year, month, day);
+	gettime(hour, minute, second);
+	if(day == 1 && month == 1 && (second > 0 || hour > 0)) TextDrawShowForPlayer(playerid, NYCounter[2]);
 
 	Snow_F[playerid] = 0;
 	Killer[playerid] = 501;
 	Charged[playerid] = 0;
 	Shoot[playerid] = 0;
-
-    return 1;
+	return 1;
 }
+
 public OnPlayerSpawn(playerid)
 {
-  	SendClientMessage(playerid,COLOR_YELLOW,"This server uses [MV]_Christmas, cmds: /christmas");
+
+	SendClientMessage(playerid,COLOR_YELLOW,"This server uses [MV]_Christmas, cmds: /christmas");
 	pLogo[ playerid ] = true ;
 	ShowLogo(playerid);
-    GiveChristmasHat(playerid,HAT_TYPE_1);
-    CreateSnow(playerid);
+	GiveChristmasHat(playerid,HAT_TYPE_1);
+	CreateSnow(playerid);
 
-    DestroyObject(Obj[playerid]);
-    if(Killer[playerid] != 501)
+	DestroyObject(Obj[playerid]);
+	if(Killer[playerid] != 501)
 	{
 		Shoot[Killer[playerid]] = 0;
 		Killer[playerid] = 501;
-    }
+	}
 	return 1;
 }
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-  	if(Snow_F[playerid] == 1) return Snow_F[playerid] = 0;
+	if(Snow_F[playerid] == 1) return Snow_F[playerid] = 0;
 	return 1;
 }
 
@@ -541,50 +546,50 @@ public Animate()
 				{
 					TheX += 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 0;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 0;
+					AddEyesOptions();
 				}
 				case 2:
 				{
 					TheX += 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 0;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 0;
+					AddEyesOptions();
 				}
 				case 3:
 				{
 					TheX += 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 0;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 0;
+					AddEyesOptions();
 				}
 				case 4:
 				{
 					TheX -= 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 0;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 0;
+					AddEyesOptions();
 				}
 				case 5:
 				{
 					TheX -= 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 0;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 0;
+					AddEyesOptions();
 				}
 				case 6:
 				{
 					TheX -= 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    AddEyesOptions();
-				    gDirection = 1;
-				    gCount = 0;
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					AddEyesOptions();
+					gDirection = 1;
+					gCount = 0;
 				}
 			}
 			pLoop()	if ( pLogo[ i ] == true ) TextDrawShowForPlayer( i, SM_Textdraw[11]);
@@ -599,52 +604,51 @@ public Animate()
 				{
 					TheX += 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 1;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 1;
+					AddEyesOptions();
 				}
 				case 2:
 				{
 					TheX += 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 1;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 1;
+					AddEyesOptions();
 				}
 				case 3:
 				{
 					TheX += 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 1;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 1;
+					AddEyesOptions();
 				}
 				case 4:
 				{
 					TheX -= 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 1;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 1;
+					AddEyesOptions();
 				}
 				case 5:
 				{
 					TheX -= 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    gDirection = 1;
-				    AddEyesOptions();
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					gDirection = 1;
+					AddEyesOptions();
 				}
 				case 6:
 				{
 					TheX -= 0.500;
 					TextDrawDestroy(Text:SM_Textdraw[11] );
-				    SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
-				    AddEyesOptions();
-				    gDirection = 2;
-				    gCount = 0;
+					SM_Textdraw[11] = TextDrawCreate(TheX, 405.000000, "..");
+					AddEyesOptions();
+					gDirection = 2;
+					gCount = 0;
 				}
-	    		
 			}
 			Loop(i,MAX_PLAYERS ) if ( pLogo[ i ] == true )	TextDrawShowForPlayer( i, SM_Textdraw[11]);
 		}
@@ -657,107 +661,72 @@ public Animate()
 				case 1:
 				{
 					BoxY += 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 2:
 				{
 					BoxY += 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 3:
 				{
 					BoxY -= 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 4:
 				{
 					BoxY -= 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 5:
 				{
 					BoxY += 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 6:
 				{
 					BoxY += 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 7:
 				{
 					BoxY -= 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    gDirection = 2;
-				    AddMouthOptions();
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					gDirection = 2;
+					AddMouthOptions();
 				}
 				case 8:
 				{
 					BoxY-= 0.050;
-				    TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
-				    AddMouthOptions();
-				    gDirection = 0;
-				    gCount = 0;
+					TextDrawLetterSize(SM_Textdraw[1],  2.099999,BoxY);
+					AddMouthOptions();
+					gDirection = 0;
+					gCount = 0;
 				}
 			}
-   			Loop(i,MAX_PLAYERS ) if ( pLogo[ i ] ==  true )	TextDrawShowForPlayer( i, SM_Textdraw[1]);
+			Loop(i,MAX_PLAYERS ) if ( pLogo[ i ] ==  true )	TextDrawShowForPlayer( i, SM_Textdraw[1]);
 		}
 	}
 }
 stock DestroyTextdraws()
 {
-	TextDrawHideForAll(SM_Textdraw[0]);
-	TextDrawDestroy(SM_Textdraw[0]);
-	TextDrawHideForAll(SM_Textdraw[1]);
-	TextDrawDestroy(SM_Textdraw[1]);
-	TextDrawHideForAll(SM_Textdraw[2]);
-	TextDrawDestroy(SM_Textdraw[2]);
-	TextDrawHideForAll(SM_Textdraw[3]);
-	TextDrawDestroy(SM_Textdraw[3]);
-	TextDrawHideForAll(SM_Textdraw[4]);
-	TextDrawDestroy(SM_Textdraw[4]);
-	TextDrawHideForAll(SM_Textdraw[5]);
-	TextDrawDestroy(SM_Textdraw[5]);
-	TextDrawHideForAll(SM_Textdraw[6]);
-	TextDrawDestroy(SM_Textdraw[6]);
-	TextDrawHideForAll(SM_Textdraw[7]);
-	TextDrawDestroy(SM_Textdraw[7]);
-	TextDrawHideForAll(SM_Textdraw[8]);
-	TextDrawDestroy(SM_Textdraw[8]);
-	TextDrawHideForAll(SM_Textdraw[9]);
-	TextDrawDestroy(SM_Textdraw[9]);
-	TextDrawHideForAll(SM_Textdraw[10]);
-	TextDrawDestroy(SM_Textdraw[10]);
-	TextDrawHideForAll(SM_Textdraw[11]);
-	TextDrawDestroy(SM_Textdraw[11]);
-	TextDrawHideForAll(SM_Textdraw[12]);
-	TextDrawDestroy(SM_Textdraw[12]);
-	TextDrawHideForAll(SM_Textdraw[13]);
-	TextDrawDestroy(SM_Textdraw[13]);
-	TextDrawHideForAll(SM_Textdraw[14]);
-	TextDrawDestroy(SM_Textdraw[14]);
-	TextDrawHideForAll(SM_Textdraw[15]);
-	TextDrawDestroy(SM_Textdraw[15]);
-	TextDrawHideForAll(SM_Textdraw[16]);
-	TextDrawDestroy(SM_Textdraw[16]);
-	TextDrawHideForAll(SM_Textdraw[17]);
-	TextDrawDestroy(SM_Textdraw[17]);
-	TextDrawHideForAll(SM_Textdraw[18]);
-	TextDrawDestroy(SM_Textdraw[18]);
-	TextDrawHideForAll(SM_Textdraw[19]);
-	TextDrawDestroy(SM_Textdraw[19]);
+	Loop(i,19)
+	{
+		TextDrawHideForAll(SM_Textdraw[i]);
+		TextDrawDestroy(SM_Textdraw[i]);
+	}
 }
 
 stock AddEyesOptions()
@@ -893,6 +862,15 @@ stock LoadTextdraws()
 	TextDrawBoxColor(SM_Textdraw[10], 255);
 	TextDrawTextSize(SM_Textdraw[10], 498.000000, 0.000000);
 
+	SM_Textdraw[11] = TextDrawCreate(508.000000, 405.000000, "..");
+	TextDrawBackgroundColor(SM_Textdraw[11], 255);
+	TextDrawFont(SM_Textdraw[11], 1);
+	TextDrawLetterSize(SM_Textdraw[11], 0.400000, 1.500000);
+	TextDrawColor(SM_Textdraw[11], 255);
+	TextDrawSetOutline(SM_Textdraw[11], 0);
+	TextDrawSetProportional(SM_Textdraw[11], 0);
+	TextDrawSetShadow(SM_Textdraw[11], 0);
+
 	SM_Textdraw[12] = TextDrawCreate(511.000000, 428.000000, ":");
 	TextDrawBackgroundColor(SM_Textdraw[12], 255);
 	TextDrawFont(SM_Textdraw[12], 1);
@@ -965,15 +943,6 @@ stock LoadTextdraws()
 	TextDrawSetProportional(SM_Textdraw[19], 1);
 	TextDrawSetShadow(SM_Textdraw[19], 0);
 
-	SM_Textdraw[11] = TextDrawCreate(508.000000, 405.000000, "..");
-	TextDrawBackgroundColor(SM_Textdraw[11], 255);
-	TextDrawFont(SM_Textdraw[11], 1);
-	TextDrawLetterSize(SM_Textdraw[11], 0.400000, 1.500000);
-	TextDrawColor(SM_Textdraw[11], 255);
-	TextDrawSetOutline(SM_Textdraw[11], 0);
-	TextDrawSetProportional(SM_Textdraw[11], 0);
-	TextDrawSetShadow(SM_Textdraw[11], 0);
-
 	pLoop() HideLogo(i);
 }
 
@@ -981,6 +950,7 @@ stock ShowLogo( playerid )
 {
 	Loop(i, 20) TextDrawShowForPlayer(playerid, SM_Textdraw[i]);
 }
+
 stock HideLogo( playerid )
 {
 	Loop(i,20) TextDrawHideForPlayer(playerid, SM_Textdraw[i]);
@@ -989,13 +959,13 @@ stock HideLogo( playerid )
 
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
-    switch(dialogid)
-    {
+	switch(dialogid)
+	{
 		case DIALOG_CHRISTMASMUSIC:
-	    {
-	        if(!response) return 0;
-	        switch(listitem)
-	        {
+		{
+			if(!response) return 0;
+			switch(listitem)
+			{
 				case 0:PlayAudioStreamForPlayer(playerid,"http://pat.exp-gaming.net/music/JoseFelicianoFelizNavidad.mp3");
 				case 1:PlayAudioStreamForPlayer(playerid,"http://pat.exp-gaming.net/music/Wewishyouamerrychristmas.mp3");
 				case 2:PlayAudioStreamForPlayer(playerid,"http://pat.exp-gaming.net/music/jinglebells.mp3");
@@ -1004,12 +974,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 5:PlayAudioStreamForPlayer(playerid,"http://pat.exp-gaming.net/music/michaelbublwhitechristmas.mp3");
 				case 6:PlayAudioStreamForPlayer(playerid,"http://pat.exp-gaming.net/music/whamlastchristmas.mp3");
 				case 7:PlayAudioStreamForPlayer(playerid,"http://pat.exp-gaming.net/music/TrainShakeUpChristmas.mp3");
-				case 8:StopAudioStreamForPlayer(playerid);
+				case 8: PlayAudioStreamForPlayer(playerid, "http://pat.exp-gaming.net/music/Ariana Grande - Santa Tell Me.mp3");
+				case 9:StopAudioStreamForPlayer(playerid);
 			}
 		}
 		case DIALOG_CHRISTMASMUSICALL:
 		{
-		    if(!response) return 0;
+			if(!response) return 0;
 			switch(listitem)
 			{
 				case 0:pLoop() PlayAudioStreamForPlayer(i,"http://pat.exp-gaming.net/music/JoseFelicianoFelizNavidad.mp3");
@@ -1020,22 +991,23 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 5:pLoop() PlayAudioStreamForPlayer(i,"http://pat.exp-gaming.net/music/michaelbublwhitechristmas.mp3");
 				case 6:pLoop() PlayAudioStreamForPlayer(i,"http://pat.exp-gaming.net/music/whamlastchristmas.mp3");
 				case 7:pLoop() PlayAudioStreamForPlayer(i,"http://pat.exp-gaming.net/music/TrainShakeUpChristmas.mp3");
-				case 8:pLoop() StopAudioStreamForPlayer(i);
+				case 8: PlayAudioStreamForPlayer(playerid, "http://pat.exp-gaming.net/music/Ariana Grande - Santa Tell Me.mp3");
+				case 9:pLoop() StopAudioStreamForPlayer(i);
 			}
 		}
 
 		case DIALOG_SAVE:
 		{
-		    if(!response) return 0;
-		    new string[128],Float:f[3],File:file;
-		    
-	    	if (!fexist(FILE_SAVE))
-		        file = fopen(FILE_SAVE, io_write);
-		    else
+			if(!response) return 0;
+			new string[128],Float:f[3],File:file;
+
+			if (!fexist(FILE_SAVE))
+				file = fopen(FILE_SAVE, io_write);
+			else
 				file = fopen(FILE_SAVE, io_append);
-		    
+
 			if(!file) return SendClientMessage(playerid,COLOR_RED,"Script can't open file.");
-		    GetPlayerPos(playerid,f[0],f[1],f[2]);
+			GetPlayerPos(playerid,f[0],f[1],f[2]);
 		    
 			switch(listitem)
 			{
@@ -1061,34 +1033,35 @@ public OnObjectMoved(objectid)
 //------------------------------CMDS--------------------------------------------
 CMD:logo(playerid,params[])
 {
-    if (pLogo[playerid] == true)
-    {
-        pLogo[playerid] = false ;
-        SendClientMessage( playerid, -1, ""#COL_EASY"The logo has been hidden! {FFFFFF}["#COL_RED"DISABLED{FFFFFF}]");
-        SendClientMessage( playerid, -1, ""#COL_EASY"Write again "#COL_BLUE"/logo"#COL_EASY" to activate it!");
-        HideLogo(playerid);
-    }
-    else
-    {
-        pLogo[playerid] = true ;
-        SendClientMessage( playerid, -1, ""#COL_EASY"The logo is displayed on the screen! {FFFFFF}["#COL_GREEN"ENABLED{FFFFFF}]");
-        SendClientMessage( playerid, -1, ""#COL_EASY"Write again "#COL_BLUE"/logo"#COL_EASY" to de-activate it!");
-        ShowLogo(playerid);
-    }
-    return 1;
+	if (pLogo[playerid] == true)
+	{
+		pLogo[playerid] = false ;
+		SendClientMessage( playerid, -1, ""#COL_EASY"The logo has been hidden! {FFFFFF}["#COL_RED"DISABLED{FFFFFF}]");
+		SendClientMessage( playerid, -1, ""#COL_EASY"Write again "#COL_BLUE"/logo"#COL_EASY" to activate it!");
+		HideLogo(playerid);
+	}
+	else
+	{
+		pLogo[playerid] = true ;
+		SendClientMessage( playerid, -1, ""#COL_EASY"The logo is displayed on the screen! {FFFFFF}["#COL_GREEN"ENABLED{FFFFFF}]");
+		SendClientMessage( playerid, -1, ""#COL_EASY"Write again "#COL_BLUE"/logo"#COL_EASY" to de-activate it!");
+		ShowLogo(playerid);
+	}
+	return 1;
 }
+
 CMD:snow(playerid, params[])
 {
-    if(snowOn{playerid})
-    {
-        DeleteSnow(playerid);
-        SendClientMessage(playerid, COLOR_RED, "* It's not snowing anymore now.");
-    }
-    else
-    {
-        CreateSnow(playerid);
-        SendClientMessage(playerid, COLOR_GREEN, "* Let it snow, let it snow, let it snow!");
-    }
+	if(snowOn{playerid})
+	{
+		DeleteSnow(playerid);
+		SendClientMessage(playerid, COLOR_RED, "* It's not snowing anymore now.");
+	}
+	else
+	{
+		CreateSnow(playerid);
+		SendClientMessage(playerid, COLOR_GREEN, "* Let it snow, let it snow, let it snow!");
+	}
     return 1;
 }
 
@@ -1104,7 +1077,7 @@ CMD:hat(playerid,params[])
 
 CMD:christmasmusic(playerid,params[])
 {
-	ShowPlayerDialog(playerid,DIALOG_CHRISTMASMUSIC,DIALOG_STYLE_LIST,"Christmas Songs:","Jose Feliciano - Feliz Navidad\nWe wish you a merry christmas\nJingle Bells\nDean Martin - Let it Snow\nMariah Carey - All I Want For Christmas Is You\nMichael Buble - White Christmas\nWham - Last Christmas\nTrain - Shake Up Christmas\nStop music","Play","Cancel");
+	ShowPlayerDialog(playerid,DIALOG_CHRISTMASMUSIC,DIALOG_STYLE_LIST,"Christmas Songs:","Jose Feliciano - Feliz Navidad\nWe wish you a merry christmas\nJingle Bells\nDean Martin - Let it Snow\nMariah Carey - All I Want For Christmas Is You\nMichael Buble - White Christmas\nWham - Last Christmas\nTrain - Shake Up Christmas\nAriana Grande - Santa tell me\nStop music","Play","Cancel");
 	return 1;
 }
 
@@ -1113,7 +1086,7 @@ CMD:cma(playerid,params[]) 	return cmd_christmasmusicall(playerid,params);
 
 CMD:christmasmusicall(playerid,params[])
 {
-	ShowPlayerDialog(playerid,DIALOG_CHRISTMASMUSICALL,DIALOG_STYLE_LIST,"Christmas Songs:","Jose Feliciano - Feliz Navidad\nWe wish you a merry christmas\nJingle Bells\nDean Martin - Let it Snow\nMariah Carey - All I Want For Christmas Is You\nMichael Buble - White Christmas\nWham - Last Christmas\nTrain - Shake Up Christmas\nStop music","Play","Cancel");
+	ShowPlayerDialog(playerid,DIALOG_CHRISTMASMUSICALL,DIALOG_STYLE_LIST,"Christmas Songs:","Jose Feliciano - Feliz Navidad\nWe wish you a merry christmas\nJingle Bells\nDean Martin - Let it Snow\nMariah Carey - All I Want For Christmas Is You\nMichael Buble - White Christmas\nWham - Last Christmas\nTrain - Shake Up Christmas\nAriana Grande - Santa tell me\nStop music","Play","Cancel");
 	return 1;
 }
 
@@ -1137,7 +1110,7 @@ CMD:snowmini(playerid,params[])
 {
 	if(Snow_F[playerid] == 0)
 	{
-	    ResetPlayerWeapons(playerid);
+		ResetPlayerWeapons(playerid);
 		Snow_F[playerid] = 1;
 		Charged[playerid] = 0;
 		Shoot[playerid] = 0;
@@ -1157,157 +1130,175 @@ CMD:snowmini(playerid,params[])
 
 CMD:fwspawn(playerid, params[])
 {
-   new c, id, Float:h, hv, Float:w, Float:in;
-   if (sscanf(params, "ififf",c,h,hv,w,in)) {
-       SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwspawn {COUNT} {HEIGHT} {HVAR} {WINDSPEED} {INTERVAL}");
-       SendClientMessage(playerid, 0xFFFFFFFF, "Example: /fwspawn 20 50.0 20 30.0 1.0");
-   }
-   else {
-        id = FindEmptySlot();
-        if (id<0) SendClientMessage(playerid, 0xFFFFFFFF, "No free slot!");
-        else {
-    	    new Float:x, Float:y, Float:z, Float:a;
-    	    GetPlayerPos(playerid,x,y,z);
-    	    GetPlayerFacingAngle(playerid,a);
-	        GetXYInFrontOfPosition(x,y,a,1.0);
-	        batteries[id][pos][0] = x;
-	        batteries[id][pos][1] = y;
-	        batteries[id][pos][2] = z;
-	        batteries[id][count] = c;
-	        batteries[id][height] = h;
-	        batteries[id][hvar] = hv;
-	        batteries[id][windspeed] = w;
-	        batteries[id][interval] = in;
+	new c, id, Float:h, hv, Float:w, Float:in;
+	if (sscanf(params, "ififf",c,h,hv,w,in)) 
+	{
+		SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwspawn {COUNT} {HEIGHT} {HVAR} {WINDSPEED} {INTERVAL}");
+		SendClientMessage(playerid, 0xFFFFFFFF, "Example: /fwspawn 20 50.0 20 30.0 1.0");
+	}
+	else 
+	{
+		id = FindEmptySlot();
+		if (id<0) 
+			SendClientMessage(playerid, 0xFFFFFFFF, "No free slot!");
+		else 
+		{
+			new Float:x, Float:y, Float:z, Float:a;
+			GetPlayerPos(playerid,x,y,z);
+			GetPlayerFacingAngle(playerid,a);
+			GetXYInFrontOfPosition(x,y,a,1.0);
+			batteries[id][pos][0] = x;
+			batteries[id][pos][1] = y;
+			batteries[id][pos][2] = z;
+			batteries[id][count] = c;
+			batteries[id][height] = h;
+			batteries[id][hvar] = hv;
+			batteries[id][windspeed] = w;
+			batteries[id][interval] = in;
 
-	        batteries[id][inuse] = true;
-            batteries[id][machine] = CreateObject(2780,x,y,z,0.0,0.0,0.0);
-            new tmp[256];
-            format(tmp,sizeof(tmp),"Machine created. Slot: %d", id);
-            SendClientMessage(playerid, 0x55FF55FF, tmp);
-        }
-   }
-   return 1;
+			batteries[id][inuse] = true;
+			batteries[id][machine] = CreateObject(2780,x,y,z,0.0,0.0,0.0);
+			new tmp[256];
+			format(tmp,sizeof(tmp),"Machine created. Slot: %d", id);
+			SendClientMessage(playerid, 0x55FF55FF, tmp);
+		}
+	}
+	return 1;
 }
 
 CMD:fwfire(playerid, params[])
 {
-   new id;
-   if (sscanf(params, "i",id) || id>sizeof(batteries) || id<0) SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwfire {ID}");
-   else {
-	   batteries[id][timer] = SetTimerEx("machinetimer",GetSomeTime(id),false,"i",id);
-       SendClientMessage(playerid, 0xFFFFFFFF, "Firework started.");
-   }
-   return 1;
+	new id;
+	if (sscanf(params, "i",id) || id>sizeof(batteries) || id<0) 
+		SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwfire {ID}");
+	else 
+	{
+		batteries[id][timer] = SetTimerEx("machinetimer",GetSomeTime(id),false,"i",id);
+		SendClientMessage(playerid, 0xFFFFFFFF, "Firework started.");
+	}
+	return 1;
 }
 
 CMD:fwfireall(playerid, params[])
 {
-   for (new i=0; i<sizeof(batteries); i++) {
-       if (batteries[i][inuse]) {
-	        batteries[i][timer] = SetTimerEx("machinetimer",GetSomeTime(i),false,"i",i);
-       }
-   }
-   SendClientMessage(playerid, 0xFFFFFFFF, "All fireworks started.");
-   return 1;
+	for (new i=0; i<sizeof(batteries); i++) 
+	{
+		if (batteries[i][inuse])
+			batteries[i][timer] = SetTimerEx("machinetimer",GetSomeTime(i),false,"i",i);
+	}
+	
+	SendClientMessage(playerid, 0xFFFFFFFF, "All fireworks started.");
+	return 1;
 }
 
 CMD:fwkill(playerid, params[])
 {
-   new id;
-   if (sscanf(params, "i",id) || id>sizeof(batteries) || id<0) SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwfire {ID}");
-   else {
-	   KillTimer(batteries[id][timer]);
-	   batteries[id][inuse] = false;
-	   DestroyObject(batteries[id][machine]);
-       SendClientMessage(playerid, 0xFFFFFFFF, "Firework deleted.");
-   }
-   return 1;
+	new id;
+	if (sscanf(params, "i",id) || id>sizeof(batteries) || id<0) 
+		SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwfire {ID}");
+	else 
+	{
+		KillTimer(batteries[id][timer]);
+		batteries[id][inuse] = false;
+		DestroyObject(batteries[id][machine]);
+		SendClientMessage(playerid, 0xFFFFFFFF, "Firework deleted.");
+	}
+	return 1;
 }
 
 CMD:fwkillall(playerid, params[])
 {
-   for (new i=0; i<sizeof(batteries); i++) {
-       if (batteries[i][inuse]) {
-    	   KillTimer(batteries[i][timer]);
-    	   batteries[i][inuse] = false;
-    	   DestroyObject(batteries[i][machine]);
-       }
-   }
-   SendClientMessage(playerid, 0xFFFFFFFF, "All fireworks deleted.");
-   return 1;
+	for (new i=0; i<sizeof(batteries); i++) 
+	{
+		if (batteries[i][inuse]) 
+		{
+			KillTimer(batteries[i][timer]);
+			batteries[i][inuse] = false;
+			DestroyObject(batteries[i][machine]);
+		}
+	}
+	SendClientMessage(playerid, 0xFFFFFFFF, "All fireworks deleted.");
+	return 1;
 }
 
 CMD:fwsave(playerid, params[])
 {
-    new filename[20],tmp[256];
-    if (sscanf(params, "s",filename)) SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwsave {NAME}");
-    else {
-        format(tmp,sizeof(tmp),"%s.firework",filename);
-        new File:f = fopen(tmp,io_write);
-        for (new i=0; i<sizeof(batteries); i++) {
-            if (batteries[i][inuse]) {
-                format(tmp, sizeof(tmp), "%f %f %f %d %f %d %f %f\r\n",
-                                        batteries[i][pos][0],
-                                        batteries[i][pos][1],
-                                        batteries[i][pos][2],
-                                        batteries[i][count],
-                                        batteries[i][height],
-                                        batteries[i][hvar],
-                                        batteries[i][windspeed],
-                                        batteries[i][interval]);
-                fwrite(f, tmp);
-            }
-        }
-        fclose(f);
-        SendClientMessage(playerid, 0xFFFFFFFF, "Fireworks saved.");
-    }
-    return 1;
+	new filename[20],tmp[256];
+	if (sscanf(params, "s[20]",filename)) 
+		SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwsave {NAME}");
+	else 
+	{
+		format(tmp,sizeof(tmp),"%s.firework",filename);
+		new File:f = fopen(tmp,io_write);
+		for (new i=0; i<sizeof(batteries); i++) 
+		{
+			if (batteries[i][inuse]) 
+			{
+				format(tmp, sizeof(tmp), "%f %f %f %d %f %d %f %f\r\n",
+				batteries[i][pos][0],
+				batteries[i][pos][1],
+				batteries[i][pos][2],
+				batteries[i][count],
+				batteries[i][height],
+				batteries[i][hvar],
+				batteries[i][windspeed],
+				batteries[i][interval]);
+				fwrite(f, tmp);
+			}
+		}
+		fclose(f);
+		SendClientMessage(playerid, 0xFFFFFFFF, "Fireworks saved.");
+	}
+	return 1;
 }
 
 
 CMD:fwload(playerid, params[])
 {
-    new filename[20],tmp[256];
-    if (sscanf(params, "s",filename)) SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwload {NAME}");
-    else
+	new filename[20],tmp[256];
+	if (sscanf(params, "s[20]",filename)) 
+		SendClientMessage(playerid, 0xFFFFFFFF, "Usage: /fwload {NAME}");
+	else
 	{
-        format(tmp,sizeof(tmp),"%s.firework",filename);
-        if (!fexist(tmp)) SendClientMessage(playerid, 0xFFFFFFFF, "File not found!");
-        else
+		format(tmp,sizeof(tmp),"%s.firework",filename);
+		if (!fexist(tmp)) 
+			SendClientMessage(playerid, 0xFFFFFFFF, "File not found!");
+		else
 		{
-            new id;
-            new File:f = fopen(tmp,io_read);
-        	while(fread(f, tmp)) {
-        	    id = FindEmptySlot();
-        	    if (id<0) {
-        	        SendClientMessage(playerid, 0xFFFFFFFF, "Out of slots...");
-                    return 1;
-        	    }
-                batteries[id][inuse] = true;
-                sscanf(tmp, "fffififf",
-                             batteries[id][pos][0],
-                             batteries[id][pos][1],
-                             batteries[id][pos][2],
-                             batteries[id][count],
-                             batteries[id][height],
-                             batteries[id][hvar],
-                             batteries[id][windspeed],
-                             batteries[id][interval]);
-                batteries[id][machine] = CreateObject(2780,batteries[id][pos][0],batteries[id][pos][1],batteries[id][pos][2],0.0,0.0,0.0);
-
-        	}
-            fclose(f);
-            SendClientMessage(playerid, 0xFFFFFFFF, "Fireworks loaded.");
-        }
-    }
-    return 1;
+			new id;
+			new File:f = fopen(tmp,io_read);
+			while(fread(f, tmp)) 
+			{
+				id = FindEmptySlot();
+				if (id<0) 
+				{
+					SendClientMessage(playerid, 0xFFFFFFFF, "Out of slots...");
+					return 1;
+				}
+				batteries[id][inuse] = true;
+				sscanf(tmp, "fffififf",
+				batteries[id][pos][0],
+				batteries[id][pos][1],
+				batteries[id][pos][2],
+				batteries[id][count],
+				batteries[id][height],
+				batteries[id][hvar],
+				batteries[id][windspeed],
+				batteries[id][interval]);
+				batteries[id][machine] = CreateObject(2780,batteries[id][pos][0],batteries[id][pos][1],batteries[id][pos][2],0.0,0.0,0.0);
+			}
+			fclose(f);
+			SendClientMessage(playerid, 0xFFFFFFFF, "Fireworks loaded.");
+		}
+	}
+	return 1;
 }
 
 CMD:setnight(playerid, params[])
 {
-    SetWorldTime(0);
-    SendClientMessageToAll(0xDDDD11FF,"The world time has been changed to 0:00.");
-    return 1;
+	SetWorldTime(0);
+	SendClientMessageToAll(0xDDDD11FF,"The world time has been changed to 0:00.");
+	return 1;
 }
 
 CMD:fwhelp(playerid, params[])
@@ -1323,8 +1314,8 @@ stock GiveChristmasHat(playerid,number)
 	{
 		case HAT_TYPE_1:
 		{
-		    RemovePlayerAttachedObject(playerid,1);
-		    SetPlayerAttachedObject(playerid, 1, 19065, 15, -0.025, -0.04, 0.23, 0, 0, 270, 2, 2, 2);
+			RemovePlayerAttachedObject(playerid,1);
+			SetPlayerAttachedObject(playerid, 1, 19065, 15, -0.025, -0.04, 0.23, 0, 0, 270, 2, 2, 2);
 		}
 		case HAT_TYPE_2:
 		{
@@ -1336,39 +1327,41 @@ stock GiveChristmasHat(playerid,number)
 forward UpdateSnow(playerid);
 public UpdateSnow(playerid)
 {
-    if(!snowOn{playerid}) return 0;
-    new Float:pPos[3];
-    GetPlayerPos(playerid, pPos[0], pPos[1], pPos[2]);
-    Loop(i,MAX_SNOW_OBJECTS) SetObjectPos(snowObject[playerid][i], pPos[0] + random(50), pPos[1] + random(50), pPos[2] - 10);
-    return 1;
+	if(snowOn{playerid})
+	{
+		new Float:pPos[3];
+		GetPlayerPos(playerid, pPos[0], pPos[1], pPos[2]);
+		Loop(i,MAX_SNOW_OBJECTS) SetObjectPos(snowObject[playerid][i], pPos[0] + random(50), pPos[1] + random(50), pPos[2] - 10);
+	}
 }
 
 stock CreateSnow(playerid)
 {
-    if(snowOn{playerid}) return 0;
-    new Float:pPos[3];
-    GetPlayerPos(playerid, pPos[0], pPos[1], pPos[2]);
-    Loop(i,MAX_SNOW_OBJECTS) snowObject[playerid][i] = CreateObject(18864, pPos[0] + random(25), pPos[1] + random (25), pPos[2] - 5, random(100), random(100), random(100));
-    snowOn{playerid} = true;
-    updateTimer{playerid} = SetTimerEx("UpdateSnow", SNOW_UPDATE_INTERVAL, true, "i", playerid);
-    return 1;
+	if(!snowOn{playerid})
+	{
+		new Float:pPos[3];
+		GetPlayerPos(playerid, pPos[0], pPos[1], pPos[2]);
+		Loop(i,MAX_SNOW_OBJECTS) snowObject[playerid][i] = CreateObject(18864, pPos[0] + random(25), pPos[1] + random (25), pPos[2] - 5, random(100), random(100), random(100));
+		snowOn{playerid} = true;
+		updateTimer{playerid} = SetTimerEx("UpdateSnow", SNOW_UPDATE_INTERVAL, true, "i", playerid);
+	}
 }
 
 stock DeleteSnow(playerid)
 {
-    if(!snowOn{playerid}) return 0;
-    Loop(i,MAX_SNOW_OBJECTS) DestroyObject(snowObject[playerid][i]);
-    KillTimer(updateTimer{playerid});
-    snowOn{playerid} = false;
-    return 1;
+	if(!snowOn{playerid}) return 0;
+	Loop(i,MAX_SNOW_OBJECTS) DestroyObject(snowObject[playerid][i]);
+	KillTimer(updateTimer{playerid});
+	snowOn{playerid} = false;
+	return 1;
 }
 
 stock CreateChristmasTree(type, Float:X, Float:Y, Float:Z)
 {
 	switch(type)
 	{
-	    case TREE_TYPE_BIG:
-	    {
+		case TREE_TYPE_BIG:
+		{
 			CreateObject(3472,X+0.28564453,Y+0.23718262,Z+27.00000000,0.00000000,0.00000000,230.48021);
 			CreateObject(664,X+0.20312500,Y+0.01171875,Z+-3.00000000,0.00000000,0.00000000,0.00000000);
 			CreateObject(3472,X+0.45312500,Y+0.51562500,Z+4.00000000,0.00000000,0.00000000,69.7851562);
@@ -1382,27 +1375,16 @@ stock CreateChristmasTree(type, Float:X, Float:Y, Float:Z)
 		}
 		case TREE_TYPE_SMALL:
 		{
-			Loop(i,sizeof(Treepos))
-		    {
-		        if(Treepos[i][XmasTreeX] == 0)
-		        {
-		            Treepos[i][XmasTreeX]=1;
-		            Treepos[i][XmasX]=X;
-		            Treepos[i][XmasY]=Y;
-		            Treepos[i][XmasZ]=Z;
-		            Treepos[i][XmasObject][0] = CreateObject(19076, X, Y, Z-1.0,0,0,300);
-		            Treepos[i][XmasObject][1] = CreateObject(19054, X, Y+1.0, Z-0.4,0,0,300);
-		            Treepos[i][XmasObject][2] = CreateObject(19058, X+1.0, Y, Z-0.4,0,0,300);
-		            Treepos[i][XmasObject][3] = CreateObject(19056, X, Y-1.0, Z-0.4,0,0,300);
-		            Treepos[i][XmasObject][4] = CreateObject(19057, X-1.0, Y, Z-0.4,0,0,300);
-		            Treepos[i][XmasObject][5] = CreateObject(19058, X-1.5, Y+1.5, Z-1.0,0,0,300);
-		            Treepos[i][XmasObject][6] = CreateObject(19055, X+1.5, Y-1.5, Z-1.0,0,0,300);
-		            Treepos[i][XmasObject][7] = CreateObject(19057, X+1.5, Y+1.5, Z-1.0,0,0,300);
-		            Treepos[i][XmasObject][8] = CreateObject(19054, X-1.5, Y-1.5, Z-1.0,0,0,300);
-		            Treepos[i][XmasObject][9] = CreateObject(3526, X, Y, Z-1.0,0,0,300);
-		            break;
-		        }
-		    }
+			CreateObject(19076, X, Y, Z-1.0,0,0,300);
+			CreateObject(19054, X, Y+1.0, Z-0.4,0,0,300);
+			CreateObject(19058, X+1.0, Y, Z-0.4,0,0,300);
+			CreateObject(19056, X, Y-1.0, Z-0.4,0,0,300);
+			CreateObject(19057, X-1.0, Y, Z-0.4,0,0,300);
+			CreateObject(19058, X-1.5, Y+1.5, Z-1.0,0,0,300);
+			CreateObject(19055, X+1.5, Y-1.5, Z-1.0,0,0,300);
+			CreateObject(19057, X+1.5, Y+1.5, Z-1.0,0,0,300);
+			CreateObject(19054, X-1.5, Y-1.5, Z-1.0,0,0,300);
+			CreateObject(3526, X, Y, Z-1.0,0,0,300);
 		}
 		case TREE_TYPE_SMALL2:
 		{
@@ -1423,7 +1405,7 @@ stock CreateChristmasLights(Float:x, Float:y, Float:z)
 
 stock LoadMetasTextdraws()
 {
-    NYCounter[0] = TextDrawCreate(316.399780, 0.995545, "_");
+	NYCounter[0] = TextDrawCreate(316.399780, 0.995545, "_");
 	TextDrawLetterSize(NYCounter[0], 0.293599, 1.510400);
 	TextDrawAlignment(NYCounter[0], 2);
 	TextDrawColor(NYCounter[0], -1);
@@ -1444,61 +1426,59 @@ stock LoadMetasTextdraws()
 	TextDrawSetOutline(NYCounter[1], 0);
 	TextDrawFont(NYCounter[1], 0);
 
-    NYCounter[2] = TextDrawCreate(340.000000, 350.000000, "~>~ HAPPY NEW YEAR ~<~~n~~y~"NEXT_YEAR"!");
-    TextDrawAlignment(NYCounter[2], 2);
-    TextDrawBackgroundColor(NYCounter[2], 255);
-    TextDrawFont(NYCounter[2], 1);
-    TextDrawLetterSize(NYCounter[2], 1.000000, 4.000000);
-    TextDrawColor(NYCounter[2], 16777215);
-    TextDrawSetOutline(NYCounter[2], 1);
+	NYCounter[2] = TextDrawCreate(340.000000, 350.000000, "~>~ HAPPY NEW YEAR ~<~~n~~y~"NEXT_YEAR"!");
+	TextDrawAlignment(NYCounter[2], 2);
+	TextDrawBackgroundColor(NYCounter[2], 255);
+	TextDrawFont(NYCounter[2], 1);
+	TextDrawLetterSize(NYCounter[2], 1.000000, 4.000000);
+	TextDrawColor(NYCounter[2], 16777215);
+	TextDrawSetOutline(NYCounter[2], 1);
 	TextDrawSetProportional(NYCounter[2], 1);
 
-    s_Timer[0] = SetTimer("CounterTimer", 400, true);
-    return 1;
+	s_Timer[0] = SetTimer("CounterTimer", 400, true);
+	return 1;
 }
 
 forward CounterTimer();
 public CounterTimer()
 {
-    new string[150];
-    new year, month, day, hour, minute, second;
-    getdate(year, month, day);
-    gettime(hour, minute, second);
-    if(month == 1 && day == 1)
-    {
-        TextDrawHideForAll(NYCounter[0]);
-        TextDrawShowForAll(NYCounter[2]);
-        KillTimer(s_Timer[0]);
-    }
-    else
-    {
-        //gettime(hour, minute, second);
+	new string[150];
+	new year, month, day, hour, minute, second;
+	getdate(year, month, day);
+	gettime(hour, minute, second);
+	if(month == 1 && day == 1)
+	{
+		TextDrawHideForAll(NYCounter[0]);
+		TextDrawShowForAll(NYCounter[2]);
+		KillTimer(s_Timer[0]);
+	}
+	else
+	{
+		new day2;
+		switch(month)
+		{
+			case 1, 3, 5, 7, 8, 10, 12: day2 = 31;
+			case 2: { if(year%4 == 0) { day2 = 29; } else { day2 = 28; } }
+			case 4, 6, 9, 11: day2 = 30;
+		}
+		month = 12 - month;
+		day = day2 - day;
+		hour = 24 - hour;
+		if(hour == 24)	hour = 0;
+		if(minute != 0)	hour--;
+		minute = 60 - minute;
+		if(minute == 60)	minute = 0;
+		if(second != 0)	minute--;
+		second = 60 - second;
+		if(second == 60)	second = 0;
 
-        new day2;
-        switch(month)
-        {
-            case 1, 3, 5, 7, 8, 10, 12: day2 = 31;
-            case 2: { if(year%4 == 0) { day2 = 29; } else { day2 = 28; } }
-            case 4, 6, 9, 11: day2 = 30;
-        }
-        month = 12 - month;
-        day = day2 - day;
-        hour = 24 - hour;
-		if(hour == 24) { hour = 0; }
-		if(minute != 0) { hour--; }
-        minute = 60 - minute;
-		if(minute == 60) { minute = 0; }
-		if(second != 0) { minute--; }
-        second = 60 - second;
-		if(second == 60) { second = 0; }
+		format(string, sizeof(string), "~p~%02d ~w~month(s), ~p~%02d ~w~day(s)~n~~p~%02d ~w~hour(s), ~p~%02d ~w~min, ~p~%02d ~w~secs~n~~y~untill %s", month, day, hour, minute, second, NEXT_YEAR);
 
-        format(string, sizeof(string), "~p~%02d ~w~month(s), ~p~%02d ~w~day(s)~n~~p~%02d ~w~hour(s), ~p~%02d ~w~min, ~p~%02d ~w~secs~n~~y~untill %s", month, day, hour, minute, second, NEXT_YEAR);
-
-        TextDrawHideForAll(NYCounter[0]);
-        TextDrawSetString(NYCounter[0], string);
-        TextDrawShowForAll(NYCounter[0]);
-    }
-    return 1;
+		TextDrawHideForAll(NYCounter[0]);
+		TextDrawSetString(NYCounter[0], string);
+		TextDrawShowForAll(NYCounter[0]);
+	}
+	return 1;
 }
 
 forward CheckSnow(playerid);
@@ -1509,7 +1489,7 @@ public CheckSnow(playerid)
 	{
 		new Float:X, Float:Y;
 		GetXYInFrontOfPlayer(playerid,X,Y,i);
-	    Loop(z,GetMaxPlayers())
+		Loop(z,GetMaxPlayers())
 		{
 			if(z != playerid && Shoot[playerid] == 0 && Killer[z] == 501)
 			{
@@ -1537,46 +1517,51 @@ public CheckSnow(playerid)
 
 GetXYInFrontOfPlayer(playerid, &Float:x, &Float:y, Float:distance)
 {
-    new Float:a;
-    GetPlayerPos(playerid, x, y, a);
-    GetPlayerFacingAngle(playerid, a);
-    if (GetPlayerVehicleID(playerid))
-    {
-      GetVehicleZAngle(GetPlayerVehicleID(playerid), a);
-    }
-    x += (distance * floatsin(-a, degrees));
-    y += (distance * floatcos(-a, degrees));
+	new Float:a;
+	GetPlayerPos(playerid, x, y, a);
+	GetPlayerFacingAngle(playerid, a);
+	if (GetPlayerVehicleID(playerid))
+	{
+		GetVehicleZAngle(GetPlayerVehicleID(playerid), a);
+	}
+	x += (distance * floatsin(-a, degrees));
+	y += (distance * floatcos(-a, degrees));
 }
 
+//---------------------------FW-------------------------------------------------
 stock FindEmptySlot()
 {
-    for (new i=0;i<sizeof(batteries);i++) {
-        if (!batteries[i][inuse]) return i;
-    }
-    return -1;
+	for (new i=0;i<sizeof(batteries);i++) 
+	{
+		if (!batteries[i][inuse]) return i;
+	}
+	return -1;
 }
 
 stock GetSomeTime(id)
 {
-   return floatround((400 + random(300)) * batteries[id][interval]);
+	return floatround((400 + random(300)) * batteries[id][interval]);
 }
 
 
 forward machinetimer(id);
 public machinetimer(id)
 {
-    if (batteries[id][count]) {
-		CreateFirework(batteries[id][pos][0],batteries[id][pos][1],batteries[id][pos][2],           //pos
-                       batteries[id][height] - batteries[id][hvar]/2 + random(batteries[id][hvar]),   //height
-                       random(360),batteries[id][windspeed],                                        //wind
-                       50.0,                                                                        //speed
-                       explosions[random(sizeof(explosions))],100.0);                               //explosion
-        batteries[id][count]--;
-        batteries[id][timer] = SetTimerEx("machinetimer",GetSomeTime(id),false,"i",id);
-    } else {
-        KillTimer(batteries[id][timer]);
-        batteries[id][timer] = -1;
-        batteries[id][inuse] = false;
-	    DestroyObject(batteries[id][machine]);
-    }
+	if (batteries[id][count]) 
+	{
+		CreateFirework(batteries[id][pos][0],batteries[id][pos][1],batteries[id][pos][2],
+		batteries[id][height] - batteries[id][hvar]/2 + random(batteries[id][hvar]),
+		random(360),batteries[id][windspeed],
+		50.0,
+		explosions[random(sizeof(explosions))],100.0);
+		batteries[id][count]--;
+		batteries[id][timer] = SetTimerEx("machinetimer",GetSomeTime(id),false,"i",id);
+	} 
+	else 
+	{
+		KillTimer(batteries[id][timer]);
+		batteries[id][timer] = -1;
+		batteries[id][inuse] = false;
+		DestroyObject(batteries[id][machine]);
+	}	
 }
