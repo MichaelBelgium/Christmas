@@ -35,7 +35,7 @@ Free to use on the following conditions:
 #define MAX_XMASTREES			30 		//recommended - If you have more you might need an object streamer
 #define MAX_SNOW_OBJECTS		2 		//recommended - If you have more you might need an object streamer
 #define SNOW_UPDATE_INTERVAL	750     //time in milliseconds, the interval between the snow
-#define NEXT_YEAR				"2017"  //Which year is it next year ?
+#define NEXT_YEAR				"2018"  //Which year is it next year ?
 #define FILE_SAVE				"[MV]_Christmas.txt" //The name of the file where to save positions too with /savepos
 
 //---------------------------------- COLORS ------------------------------------
